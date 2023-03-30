@@ -1,0 +1,23 @@
+div > span {
+    font-size: 0.8em;
+}
+
+.card {
+    cursor: pointer;
+    margin-bottom: 1em;
+}
+
+.card:hover {
+    color: #ffc107;
+    border: 1px solid #ffc107;
+}
+
+._header {
+    color: #ffc107;
+    font-weight: 700;
+}
+
+.spinner-wrapper {
+    text-align: center;
+    margin-top: 8em;
+}

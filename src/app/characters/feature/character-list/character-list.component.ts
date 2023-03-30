@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { CharacterResponse } from '../../model/character-response';
-import { GetCharacters } from '../../store/character/character.actions';
+import { GetCharacters, LoadMoreCharacters } from '../../store/character/character.actions';
 
 @Component({
   selector: 'app-character-list',
@@ -11,6 +11,7 @@ import { GetCharacters } from '../../store/character/character.actions';
 export class CharacterListComponent implements OnInit {
   public characters: CharacterResponse;
 
+  public loadMoreBtn: boolean = false;
   constructor(
     private store: Store
   ) { }
@@ -20,5 +21,13 @@ export class CharacterListComponent implements OnInit {
       this.characters = this.store.selectSnapshot(state => state.characters.characters);
     });
     
+  }
+
+  loadMore() {
+    this.loadMoreBtn = true;
+    this.store.dispatch(new LoadMoreCharacters(this.characters.next)).subscribe(() => {
+      this.characters = this.store.selectSnapshot(state => state.characters.characters);
+      this.loadMoreBtn = false;
+    });
   }
 }

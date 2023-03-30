@@ -16,4 +16,8 @@ export class CharacterApiService {
   public getCharacters(): Observable<CharacterResponse> {
     return this.http.get<CharacterResponse>(this.peopleUrl);
   }
+
+  public get(url: string): Observable<any> {
+    return this.http.get<any>(url);
+  }
 }

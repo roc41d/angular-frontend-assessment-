@@ -1,5 +1,5 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { GetCharacters } from './character.actions';
+import { GetCharacters, LoadMoreCharacters } from './character.actions';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { CharacterResponse } from '../../model/character-response';
@@ -35,6 +35,23 @@ export class CharacterState {
         return this.characterApiService.getCharacters().pipe(tap((response: CharacterResponse) => {
             ctx.patchState({
                 characters: response
+            });
+        }));
+    }
+
+    @Action(LoadMoreCharacters)
+    loadMoreCharacters(ctx: StateContext<CharacterStateModel>, {nextPageUrl}: LoadMoreCharacters) {
+        
+        return this.characterApiService.get(nextPageUrl).pipe(tap((response: CharacterResponse) => {
+            const state = ctx.getState();
+
+            state.characters.count = response.count;
+            state.characters.next = response.next;
+            state.characters.previous = response.previous;
+            state.characters.results = state.characters.results.concat(response.results);
+            
+            ctx.patchState({
+                characters: state.characters
             });
         }));
     }

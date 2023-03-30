@@ -19,4 +19,11 @@ describe('CharacterApiService', () => {
 
     expect(mockHttpClient.get).toHaveBeenCalledWith(environment.apiUrl + '/people/');
   });
+
+  it('should call http.get() method with the correct URL for get()', () => {
+    const url = 'http://example.com';
+    characterApiService.get(url);
+
+    expect(mockHttpClient.get).toHaveBeenCalledWith(url);
+  });
 });

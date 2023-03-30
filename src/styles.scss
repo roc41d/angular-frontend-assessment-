@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    background-color: #ffffff;
+}
+
+._box-shadow {
+    box-shadow: 0 0 1.5625vw 0 rgb(5 0 30 / 10%);
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0 1.5625vw 0 rgb(5 0 30 / 10%);
+}
