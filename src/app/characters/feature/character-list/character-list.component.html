@@ -1,6 +1,54 @@
 <div class="container mt-3 mb-5">
     <h1 class="_header text-center mt-3 mb-3">Star Wars Character</h1>
 
+    <div class="filter-container _box-shadow">
+        <h4>Filters</h4>
+        <div class="row">
+            <form [formGroup]="filterForm" class="row" (ngSubmit)="onSumnit(filterForm)">
+                <div class="col-md-3 col-sm-12">
+                    <label for="inputMovies" class="form-label">Movies</label>
+                    <select formControlName="movie" id="inputMovies" class="form-select">
+                        <option selected value="">Choose Movie</option>
+                        <option *ngFor="let movie of movies$ | async" value="{{movie.url}}">{{ movie.title }}</option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <label for="inputSpecies" class="form-label">Species</label>
+                    <select formControlName="species" id="inputSpecies" class="form-select">
+                        <option selected value="">Choose Species</option>
+                        <option *ngFor="let specie of species$ | async"value="{{specie.url}}">{{ specie.name }}</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <label for="inputYearFrom" class="form-label">
+                        Year From
+                    </label>
+                    <input formControlName="minyear" placeholder="Ex. 30BBY" type="text" class="form-control" id="inputYearFrom">
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <label for="inputYearTo" class="form-label">
+                        Year to
+                    </label>
+                    <input formControlName="maxyear" placeholder="Ex. 5ABY" type="text" class="form-control" id="inputYearTo">
+                </div>
+                <div class="col-md-2 col-sm-12 btn-section">
+                    <button type="submit" *ngIf="!filterBtn" [disabled]="resetBtn" class="btn btn-warning" style="margin-right: 1.5em;">Filter</button>
+    
+                    <button *ngIf="filterBtn" class="btn btn-warning" type="button" style="margin-right: 1.5em;" disabled>
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        <span class="visually-hidden">Loading...</span>
+                    </button>
+    
+                    <button type="button" *ngIf="!resetBtn" [disabled]="filterBtn" (click)="resetFilter()" class="btn btn-light">Reset</button>
+                    <button *ngIf="resetBtn" class="btn btn-light" type="button" disabled>
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        <span class="visually-hidden">Loading...</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="row mt-5 mb-2">
         <div *ngIf="characters && characters.results.length > 0">
             <div class="card" *ngFor="let character of characters.results" (click)="onCharacterSelect(character)" id="{{character.url}}">

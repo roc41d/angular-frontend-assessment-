@@ -1,26 +1,45 @@
 
 import { Injectable } from "@angular/core";
-import { Action, State, StateContext } from "@ngxs/store";
-import { GetSpeciesCollection } from "./species.actions";
-import { forkJoin, Observable } from 'rxjs';
+import { Action, Selector, State, StateContext } from "@ngxs/store";
+import { GetSpecies, GetSpeciesCollection } from "./species.actions";
+import { forkJoin, Observable, tap } from 'rxjs';
 import { CharacterApiService } from '../../data-access/character-api.service';
 import { Species } from "../../model/species";
+import { SpeciesResponse } from "../../model/species-response";
 
 
 interface SpeciesStateModel {
     speciesCollection: Species[];
+    species: Species[];
 }
 
 @State<SpeciesStateModel>({
     name: 'species',
     defaults: {
-        speciesCollection: []
+        speciesCollection: [],
+        species: []
     }
 })
 
 @Injectable()
 export class SpeciesState {
     constructor(private characterApiService: CharacterApiService) { }
+
+    @Selector()
+    static getSpeciesList(state: SpeciesStateModel) {
+        return state.species;
+    }
+
+    @Action(GetSpecies)
+    getSpecies(ctx: StateContext<SpeciesStateModel>) {
+        return this.characterApiService.getSpecies().pipe(
+            tap((result: SpeciesResponse) => {
+                ctx.patchState({
+                    species: result.results
+                });
+            })
+        );
+    }
 
     @Action(GetSpeciesCollection)
     getSpeciesCollection(ctx: StateContext<SpeciesStateModel>, { speciesCollectionUrl }: GetSpeciesCollection) {
