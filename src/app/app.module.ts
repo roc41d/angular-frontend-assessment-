@@ -5,6 +5,7 @@ import { NgxsModule } from '@ngxs/store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { stateList } from './characters/state/states.list';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { AppComponent } from './app.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgxsModule.forRoot()
+    NgxsModule.forRoot([...stateList])
   ],
   providers: [],
   bootstrap: [AppComponent]
