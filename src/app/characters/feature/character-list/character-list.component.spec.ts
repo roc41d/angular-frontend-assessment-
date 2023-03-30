@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { Character } from '../../model/character';
 import { CharacterResponse } from '../../model/character-response';
 import { GetCharacters } from '../../store/character/character.actions';
+import { CustomValidation } from '../../utils/customValidation';
 
 import { CharacterListComponent } from './character-list.component';
 
@@ -15,6 +16,7 @@ describe('CharacterListComponent', () => {
   let store: Store;
   let router: Router;
   const formBuilder: FormBuilder = new FormBuilder();
+  let customValidator: CustomValidation;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,6 +26,7 @@ describe('CharacterListComponent', () => {
         { provide: Store, useValue: { dispatch: jest.fn().mockReturnValue(of(true)), selectSnapshot: jest.fn(), select: jest.fn()} },
         { provide: Router, useValue: { navigate: jest.fn() } },
         { provide: FormBuilder, useValue: formBuilder },
+        CustomValidation
       ]
     })
     .compileComponents();
@@ -32,11 +35,12 @@ describe('CharacterListComponent', () => {
     component = fixture.componentInstance;
     store = TestBed.inject(Store);
     router = TestBed.inject(Router);
+    customValidator = TestBed.inject(CustomValidation);
     component.filterForm = formBuilder.group({
       movie: [''],
       species: [''],
-      minyear: [''],
-      maxyear: ['']
+      minyear: ['', customValidator.yearInputPatternValidator()],
+      maxyear: ['', customValidator.yearInputPatternValidator()]
     });
     fixture.detectChanges();
   });
@@ -101,6 +105,15 @@ describe('CharacterListComponent', () => {
       const filteredCharacters = (component as any).applyFilters(form, characterToFilter);
 
       expect(filteredCharacters.results.length).toEqual(1);
+    });
+
+    it('should filter by birth year', () => {
+      const form = component.filterForm;
+      form.setValue({ movie: '', species: '', minyear: '20BBY', maxyear: '149ABY' });
+
+      const filteredCharacters = (component as any).applyFilters(form, characterToFilter);
+
+      expect(filteredCharacters.results.length).toEqual(2);
     });
   });
 });

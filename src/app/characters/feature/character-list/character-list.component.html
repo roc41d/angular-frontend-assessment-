@@ -4,7 +4,7 @@
     <div class="filter-container _box-shadow">
         <h4>Filters</h4>
         <div class="row">
-            <form [formGroup]="filterForm" class="row" (ngSubmit)="onSumnit(filterForm)">
+            <form [formGroup]="filterForm" class="row" (ngSubmit)="onSubmit(filterForm)">
                 <div class="col-md-3 col-sm-12">
                     <label for="inputMovies" class="form-label">Movies</label>
                     <select formControlName="movie" id="inputMovies" class="form-select">
@@ -21,15 +21,25 @@
                 </div>
                 <div class="col-md-2 col-sm-12">
                     <label for="inputYearFrom" class="form-label">
-                        Year From
+                        Year From 
+                        <span class="text-danger" *ngIf="this.filterFormControl.maxyear.value !== ''"> *</span>
                     </label>
                     <input formControlName="minyear" placeholder="Ex. 30BBY" type="text" class="form-control" id="inputYearFrom">
+                    <span class="text-danger"
+                        *ngIf="filterFormControl.minyear.dirty && filterFormControl.minyear.errors?.['invalidYearFormat']">
+                            Should be Ex. 30BBY or 5ABY
+                    </span>
                 </div>
                 <div class="col-md-2 col-sm-12">
                     <label for="inputYearTo" class="form-label">
                         Year to
+                        <span class="text-danger" *ngIf="this.filterFormControl.minyear.value !== ''"> *</span>
                     </label>
                     <input formControlName="maxyear" placeholder="Ex. 5ABY" type="text" class="form-control" id="inputYearTo">
+                    <span class="text-danger"
+                        *ngIf="filterFormControl.maxyear.dirty && filterFormControl.maxyear.errors?.['invalidYearFormat']">
+                            Should be Ex. 30BBY or 5ABY
+                    </span>
                 </div>
                 <div class="col-md-2 col-sm-12 btn-section">
                     <button type="submit" *ngIf="!filterBtn" [disabled]="resetBtn" class="btn btn-warning" style="margin-right: 1.5em;">Filter</button>

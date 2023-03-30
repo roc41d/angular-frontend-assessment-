@@ -10,6 +10,7 @@ import { Species } from '../../model/species';
 import { GetCharacters, LoadMoreCharacters } from '../../store/character/character.actions';
 import { GetMovies } from '../../store/movie/movie.actions';
 import { GetSpecies } from '../../store/species/species.actions';
+import { CustomValidation } from '../../utils/customValidation';
 
 @Component({
   selector: 'app-character-list',
@@ -29,7 +30,8 @@ export class CharacterListComponent implements OnInit {
   constructor(
     private store: Store,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private customValidator: CustomValidation
   ) { }
 
   /**
@@ -50,8 +52,8 @@ export class CharacterListComponent implements OnInit {
     this.filterForm = this.fb.group({
       movie: [''],
       species: [''],
-      minyear: [''],
-      maxyear: ['']
+      minyear: ['', this.customValidator.yearInputPatternValidator()],
+      maxyear: ['', this.customValidator.yearInputPatternValidator()]
     });
   }
 
@@ -84,7 +86,34 @@ export class CharacterListComponent implements OnInit {
     if (form.value.species) {
       characters.results = this.filterCharacterByProperty(characters.results, 'species', form.value.species);
     }
+
+    /**
+     * I didn't find relevant materials on how to handle Star War characters birth_year, so did the filtering using only the number part of the string.
+     * For example, if birth_year is "40.8BBY", then the number part is 40.8.
+     * I am not sure if this is the right way to handle it. I am open to suggestions to make it better.
+     */
+    // filter by year
+    if (form.value.minyear && form.value.maxyear) {
+      const yearFrom = this.extractNumberPart(form.value.minyear);
+      const yearTo = this.extractNumberPart(form.value.maxyear);
+
+      characters.results = characters.results.filter((character: Character) => {
+        const birthYear = this.extractNumberPart(character.birth_year);
+
+        return birthYear > yearFrom && birthYear < yearTo;
+      });
+    }
     return characters;
+  }
+
+  private isYearFilterValid(): boolean {
+    return this.filterFormControl.minyear.valid && this.filterFormControl.maxyear.valid;
+  }
+
+  private extractNumberPart(birthYear: string): number {
+    const match = birthYear.match(/(\d+(\.\d+)?)/);
+
+    return match ? parseFloat(match[0]) : 0;
   }
 
   get filterFormControl(): any {
@@ -100,10 +129,11 @@ export class CharacterListComponent implements OnInit {
     
   }
 
-  public loadMore() {
+ public loadMore() {
     this.loadMoreBtn = true;
     this.store.dispatch(new LoadMoreCharacters(this.characters.next)).subscribe(() => {
       this.characters = this.store.selectSnapshot(state => state.characters.characters);
+      this.characters = this.applyFilters(this.filterForm, this.characters);
       this.loadMoreBtn = false;
     });
   }
@@ -113,7 +143,11 @@ export class CharacterListComponent implements OnInit {
     this.router.navigate(['characters', characterId]);
   }
 
-  public onSumnit(form: FormGroup): void {
+  public onSubmit(form: FormGroup): void {
+    if (!this.isYearFilterValid()) {
+      return;
+    }
+
     this.filterBtn = true;
     
     this.characters = this.applyFilters(form, this.characters);
