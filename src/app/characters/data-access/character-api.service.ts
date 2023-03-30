@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CharacterResponse } from '../model/character-response';
 import { Character } from '../model/character';
+import { MovieResponse } from '../model/movie-response';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ import { Character } from '../model/character';
 export class CharacterApiService {
 
   private peopleUrl = environment.apiUrl + '/people/';
+  private moviesUrl = environment.apiUrl + '/films/';
   
   constructor(private http: HttpClient) {}
 

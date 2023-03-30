@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { GetCharacter } from '../../store/character/character.actions';
 import { Location } from '@angular/common';
 import { CharacterDetailsComponent } from './character-details.component';
+import { GetMovieCollection } from '../../store/movie/movie.actions';
 
 describe('CharacterDetailsComponent', () => {
   let component: CharacterDetailsComponent;
@@ -47,5 +48,11 @@ describe('CharacterDetailsComponent', () => {
   it('should navigate back', () => {
     component.back();
     expect(location.back).toHaveBeenCalled();
+  });
+
+  it('should fetch movie collection', () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+    (component as any).getMoview(['http://swapi.dev/api/films/1/']);
+    expect(dispatchSpy).toHaveBeenCalledWith(new GetMovieCollection(['http://swapi.dev/api/films/1/']));
   });
 });
