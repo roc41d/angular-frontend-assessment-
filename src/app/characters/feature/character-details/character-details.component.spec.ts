@@ -6,6 +6,7 @@ import { GetCharacter } from '../../store/character/character.actions';
 import { Location } from '@angular/common';
 import { CharacterDetailsComponent } from './character-details.component';
 import { GetMovieCollection } from '../../store/movie/movie.actions';
+import { GetSpeciesCollection } from '../../store/species/species.actions';
 
 describe('CharacterDetailsComponent', () => {
   let component: CharacterDetailsComponent;
@@ -54,5 +55,11 @@ describe('CharacterDetailsComponent', () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     (component as any).getMoview(['http://swapi.dev/api/films/1/']);
     expect(dispatchSpy).toHaveBeenCalledWith(new GetMovieCollection(['http://swapi.dev/api/films/1/']));
+  });
+
+  it('should fetch species collection', () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+    (component as any).getSpecies(['http://swapi.dev/api/species/1/']);
+    expect(dispatchSpy).toHaveBeenCalledWith(new GetSpeciesCollection(['http://swapi.dev/api/species/1/']));
   });
 });

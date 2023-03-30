@@ -9,6 +9,9 @@
                 <h1>{{character.name}}</h1>
                 <div class="card card-top-boarder">
                     <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted" *ngIf="(species$ | async)?.length > 0">
+                            Species: <span *ngFor="let spec of species$ | async">{{spec.name}} </span>
+                        </h6>
                         <h6 class="card-subtitle mb-2 text-muted">
                             Gender: {{character.gender}}
                         </h6>
