@@ -41,6 +41,19 @@
                 </div>
             </div>
 
+            <div class="section-wrapper text-center" *ngIf="(spaceShips$ | async)?.length > 0">
+                <h3 class="header-bottom">Spaceships</h3>
+                <div class="row justify-content-center">
+                    <div class="col-md-4 col-sm-6" *ngFor="let ship of spaceShips$ | async">
+                        <div class="card card-bottom card-top-boarder">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ship.name}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <ng-template #loading_section>
             <div class="spinner-wrapper">

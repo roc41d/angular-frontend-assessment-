@@ -9,6 +9,8 @@ import { Movie } from '../../model/movie';
 import { GetMovieCollection } from '../../store/movie/movie.actions';
 import { GetSpeciesCollection } from '../../store/species/species.actions';
 import { Species } from '../../model/species';
+import { SpaceShip } from '../../model/space-ship';
+import { GetSpaceShipCollection } from '../../store/space-ship/space-ship.actions';
 
 @Component({
   selector: 'app-character-details',
@@ -19,6 +21,7 @@ export class CharacterDetailsComponent implements OnInit {
   public character: Character;
   @Select((state: any) => state.movies.movieCollection) movies$: Observable<Movie[]>;
   @Select((state: any) => state.species.speciesCollection) species$: Observable<Species[]>;
+  @Select((state: any) => state.spaceShips.spaceShipCollection) spaceShips$: Observable<SpaceShip[]>;
   constructor(
     private store: Store,
     private route: ActivatedRoute,
@@ -26,7 +29,7 @@ export class CharacterDetailsComponent implements OnInit {
   ) { }
 
   /**
-   * Fetch movie data
+   * Fetch movie collection
    * @param {string[]} movieUrls: string array of movies url
    */
     private getMoview(movieUrls: string[]): void {
@@ -39,7 +42,7 @@ export class CharacterDetailsComponent implements OnInit {
   }
 
   /**
-   * Fetch species data
+   * Fetch species collection
    * @param {string[]} specyUrls: string array of species url
    */
   private getSpecies(specyUrls: string[]): void {
@@ -51,6 +54,19 @@ export class CharacterDetailsComponent implements OnInit {
     this.store.dispatch(new GetSpeciesCollection(specyUrls));
   }
 
+  /**
+   * Fetch starship collection
+   * @param {string[]} starshipUrls: string array of starships url
+   */
+    private getSpaceShips(starshipUrls: string[]): void {
+      if(starshipUrls.length === 0) {
+        this.store.dispatch(new GetSpaceShipCollection([]));
+        return;
+      }
+  
+      this.store.dispatch(new GetSpaceShipCollection(starshipUrls));
+    }
+
   ngOnInit(): void {
     const characterId = this.route.snapshot.params['id'];
 
@@ -59,6 +75,7 @@ export class CharacterDetailsComponent implements OnInit {
 
       this.getSpecies(this.character.species);
       this.getMoview(this.character.films);
+      this.getSpaceShips(this.character.starships);
     });
   }
 
