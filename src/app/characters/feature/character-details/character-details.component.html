@@ -1,1 +1,37 @@
-<p>character-details works!</p>
+<div class="container">
+    <div class="mt-2">
+        <button type="button" (click)="back()" class="btn btn-warning">Back</button>
+    </div>
+
+    <div class="row character-wrapper">
+        <div class="col-md-8 offset-md-2" *ngIf="character; else loading_section">
+            <div class="section-wrapper">
+                <h1>{{character.name}}</h1>
+                <div class="card card-top-boarder">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            Gender: {{character.gender}}
+                        </h6>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            Birth Year: {{character.birth_year}}
+                        </h6>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            Height: {{character.height}}
+                        </h6>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            Skin Color: {{character.skin_color}}
+                        </h6>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <ng-template #loading_section>
+            <div class="spinner-wrapper">
+                <div class="spinner-grow text-warning" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>

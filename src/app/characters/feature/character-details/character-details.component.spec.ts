@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { of } from 'rxjs';
 import { GetCharacter } from '../../store/character/character.actions';
-
+import { Location } from '@angular/common';
 import { CharacterDetailsComponent } from './character-details.component';
 
 describe('CharacterDetailsComponent', () => {
@@ -11,13 +11,15 @@ describe('CharacterDetailsComponent', () => {
   let fixture: ComponentFixture<CharacterDetailsComponent>;
   let store: Store;
   let route: ActivatedRoute;
+  let location: Location;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ CharacterDetailsComponent ],
       providers: [
         { provide: Store, useValue: { dispatch: jest.fn().mockReturnValue(of(true)), selectSnapshot: jest.fn()} },
-        { provide: ActivatedRoute, useValue: { snapshot: { params: { id: '1' } } } }
+        { provide: ActivatedRoute, useValue: { snapshot: { params: { id: '1' } } } },
+        { provide: Location, useValue: { back: jest.fn() } }
       ],
     })
     .compileComponents();
@@ -26,6 +28,7 @@ describe('CharacterDetailsComponent', () => {
     component = fixture.componentInstance;
     store = TestBed.inject(Store);
     route = TestBed.inject(ActivatedRoute);
+    location = TestBed.inject(Location);
     fixture.detectChanges();
   });
 
@@ -39,5 +42,10 @@ describe('CharacterDetailsComponent', () => {
 
     component.ngOnInit();
     expect(dispatchSpy).toHaveBeenCalledWith(new GetCharacter(characterId));
+  });
+
+  it('should navigate back', () => {
+    component.back();
+    expect(location.back).toHaveBeenCalled();
   });
 });

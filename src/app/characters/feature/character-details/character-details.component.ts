@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
+import {Location} from '@angular/common';
 import { Character } from '../../model/character';
 import { GetCharacter } from '../../store/character/character.actions';
 
@@ -15,6 +16,7 @@ export class CharacterDetailsComponent implements OnInit {
   constructor(
     private store: Store,
     private route: ActivatedRoute,
+    private _location: Location
   ) { }
 
   ngOnInit(): void {
@@ -23,5 +25,9 @@ export class CharacterDetailsComponent implements OnInit {
     this.store.dispatch(new GetCharacter(characterId)).subscribe(() => {
       this.character = this.store.selectSnapshot(state => state.characters.character);
     });
+  }
+
+  public back(): void {
+    this._location.back();
   }
 }
