@@ -26,4 +26,11 @@ describe('CharacterApiService', () => {
 
     expect(mockHttpClient.get).toHaveBeenCalledWith(url);
   });
+
+  it('should call http.get() method with the correct URL for getCharacter()', () => {
+    const characterId = '1';
+    characterApiService.getCharacter(characterId);
+
+    expect(mockHttpClient.get).toHaveBeenCalledWith(`${environment.apiUrl}/people/${characterId}`);
+  });
 });

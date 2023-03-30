@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CharacterResponse } from '../model/character-response';
+import { Character } from '../model/character';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,9 @@ export class CharacterApiService {
 
   public get(url: string): Observable<any> {
     return this.http.get<any>(url);
+  }
+
+  public getCharacter(id: string): Observable<Character> {
+    return this.http.get<Character>(`${this.peopleUrl}${id}`);
   }
 }

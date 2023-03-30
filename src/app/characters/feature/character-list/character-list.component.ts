@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
+import { Character } from '../../model/character';
 import { CharacterResponse } from '../../model/character-response';
 import { GetCharacters, LoadMoreCharacters } from '../../store/character/character.actions';
 
@@ -13,8 +15,15 @@ export class CharacterListComponent implements OnInit {
 
   public loadMoreBtn: boolean = false;
   constructor(
-    private store: Store
+    private store: Store,
+    private router: Router,
   ) { }
+
+  private getCharacterIdFromUrl(url: string): string {
+    const urlArr = url.split("/");
+
+    return urlArr[urlArr.length - 2];
+  }
 
   ngOnInit(): void {
     this.store.dispatch(new GetCharacters()).subscribe(() => {
@@ -29,5 +38,10 @@ export class CharacterListComponent implements OnInit {
       this.characters = this.store.selectSnapshot(state => state.characters.characters);
       this.loadMoreBtn = false;
     });
+  }
+
+  public onCharacterSelect(character: Character): void {
+    const characterId = this.getCharacterIdFromUrl(character.url)
+    this.router.navigate(['characters', characterId]);
   }
 }
