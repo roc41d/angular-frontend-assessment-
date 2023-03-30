@@ -24,13 +24,19 @@ export class MovieState {
 
     @Action(GetMovieCollection)
     async getMovieCollection(ctx: StateContext<MovieStateModel>, { movieCollectionUrl }: GetMovieCollection) {
-        const requestArr: Observable<Object>[] = []
-        movieCollectionUrl.forEach(url => requestArr.push(this.characterApiService.get(url)));
-
-        return forkJoin(requestArr).subscribe((res: any) => {
-            ctx.patchState({
-                movieCollection: res
+        if (movieCollectionUrl.length === 0) {
+            return ctx.patchState({
+                movieCollection: []
             });
-        });
+        } else {
+            const requestArr: Observable<Object>[] = []
+            movieCollectionUrl.forEach(url => requestArr.push(this.characterApiService.get(url)));
+
+            return forkJoin(requestArr).subscribe((res: any) => {
+                ctx.patchState({
+                    movieCollection: res
+                });
+            });
+        }
     }
 }

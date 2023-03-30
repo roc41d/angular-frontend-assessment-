@@ -24,13 +24,19 @@ export class SpeciesState {
 
     @Action(GetSpeciesCollection)
     getSpeciesCollection(ctx: StateContext<SpeciesStateModel>, { speciesCollectionUrl }: GetSpeciesCollection) {
-        const requestArr: Observable<Object>[] = []
-        speciesCollectionUrl.forEach(url => requestArr.push(this.characterApiService.get(url)));
-
-        return forkJoin(requestArr).subscribe((res: any) => {
-            ctx.patchState({
-                speciesCollection: res
+        if (speciesCollectionUrl.length === 0) {
+            return ctx.patchState({
+                speciesCollection: []
             });
-        });
+        } else {
+            const requestArr: Observable<Object>[] = []
+            speciesCollectionUrl.forEach(url => requestArr.push(this.characterApiService.get(url)));
+
+            return forkJoin(requestArr).subscribe((res: any) => {
+                ctx.patchState({
+                    speciesCollection: res
+                });
+            });
+        }
     }
 }
