@@ -12,10 +12,16 @@ import { GetMovies } from '../../store/movie/movie.actions';
 import { GetSpecies } from '../../store/species/species.actions';
 import { CustomValidation } from '../../utils/customValidation';
 
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-character-list',
   templateUrl: './character-list.component.html',
-  styleUrls: ['./character-list.component.scss']
+  styleUrls: ['./character-list.component.scss'],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  providers: [CustomValidation]
 })
 export class CharacterListComponent implements OnInit {
   private store = inject(Store);

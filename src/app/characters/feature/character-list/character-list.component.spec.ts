@@ -21,7 +21,6 @@ describe('CharacterListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, NgxsModule.forRoot([])],
-      declarations: [ CharacterListComponent ],
       providers: [
         { provide: Store, useValue: { dispatch: jest.fn().mockReturnValue(of(true)), selectSnapshot: jest.fn(), select: jest.fn()} },
         { provide: Router, useValue: { navigate: jest.fn() } },

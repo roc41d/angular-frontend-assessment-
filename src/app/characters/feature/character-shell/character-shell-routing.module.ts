@@ -4,9 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () =>
-      import('../character-list/character-list.module').then(
-        (m) => m.CharacterListModule
+    loadComponent: () =>
+      import('../character-list/character-list.component').then(
+        (c) => c.CharacterListComponent
       ),
   },
   {
