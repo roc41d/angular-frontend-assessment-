@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import {Location} from '@angular/common';
@@ -18,15 +18,15 @@ import { GetSpaceShipCollection } from '../../store/space-ship/space-ship.action
   styleUrls: ['./character-details.component.scss']
 })
 export class CharacterDetailsComponent implements OnInit {
+  private store = inject(Store);
+  private route = inject(ActivatedRoute);
+  private _location = inject(Location);
+
   public character: Character;
+  
   @Select((state: any) => state.movies.movieCollection) movies$: Observable<Movie[]>;
   @Select((state: any) => state.species.speciesCollection) species$: Observable<Species[]>;
   @Select((state: any) => state.spaceShips.spaceShipCollection) spaceShips$: Observable<SpaceShip[]>;
-  constructor(
-    private store: Store,
-    private route: ActivatedRoute,
-    private _location: Location
-  ) { }
 
   /**
    * Fetch movie collection

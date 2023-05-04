@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -18,6 +18,11 @@ import { CustomValidation } from '../../utils/customValidation';
   styleUrls: ['./character-list.component.scss']
 })
 export class CharacterListComponent implements OnInit {
+  private store = inject(Store);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+  private customValidator = inject(CustomValidation);
+
   @Select((state: any) => state.movies.movies) movies$: Observable<Movie[]>;
   @Select((state: any) => state.species.species) species$: Observable<Species[]>;
 
@@ -27,12 +32,6 @@ export class CharacterListComponent implements OnInit {
   public loadMoreBtn: boolean = false;
   public filterBtn: boolean = false;
   public resetBtn: boolean = false;
-  constructor(
-    private store: Store,
-    private router: Router,
-    private fb: FormBuilder,
-    private customValidator: CustomValidation
-  ) { }
 
   /**
    * Get character id from url
