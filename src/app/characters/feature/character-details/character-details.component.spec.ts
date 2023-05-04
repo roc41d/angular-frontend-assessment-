@@ -18,7 +18,6 @@ describe('CharacterDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CharacterDetailsComponent ],
       providers: [
         { provide: Store, useValue: { dispatch: jest.fn().mockReturnValue(of(true)), selectSnapshot: jest.fn()} },
         { provide: ActivatedRoute, useValue: { snapshot: { params: { id: '1' } } } },

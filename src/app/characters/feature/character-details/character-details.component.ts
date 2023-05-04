@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -15,7 +16,9 @@ import { GetSpaceShipCollection } from '../../store/space-ship/space-ship.action
 @Component({
   selector: 'app-character-details',
   templateUrl: './character-details.component.html',
-  styleUrls: ['./character-details.component.scss']
+  styleUrls: ['./character-details.component.scss'],
+  standalone: true,
+  imports: [CommonModule]
 })
 export class CharacterDetailsComponent implements OnInit {
   private store = inject(Store);
@@ -23,7 +26,7 @@ export class CharacterDetailsComponent implements OnInit {
   private _location = inject(Location);
 
   public character: Character;
-  
+
   @Select((state: any) => state.movies.movieCollection) movies$: Observable<Movie[]>;
   @Select((state: any) => state.species.speciesCollection) species$: Observable<Species[]>;
   @Select((state: any) => state.spaceShips.spaceShipCollection) spaceShips$: Observable<SpaceShip[]>;
