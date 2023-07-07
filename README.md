@@ -1,4 +1,4 @@
-# Angular Frontend Assessment
+# minimal Angular frontend for [SWAPI (Star Wars API)](https://swapi.dev)
 
 ## Getting started
 
