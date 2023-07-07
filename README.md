@@ -14,13 +14,13 @@ Typescript:  v4.9.5
 Clone the repository
 
 ```
-git clone git@github.com:roc41d/angular-frontend-assessment-.git
+git clone git@github.com:roc41d/angular-frontend-for-swapi.git
 ```
 
 Switch to project folder
 
 ```
-cd angular-frontend-assessment-
+cd angular-frontend-for-swapi
 ```
 
 Install dependencies
@@ -58,20 +58,20 @@ Install and setup [Docker](https://www.docker.com)
 Switch to project folder
 
 ```
-cd angular-frontend-assessment-
+cd angular-frontend-for-swapi
 ```
 
 ```
 docker build -t <username>/<app-name>:<tag> .
 
-Ex. docker build -t rocard/angular-frontend-assessment:v0.1 .
+Ex. docker build -t rocard/angular-frontend-for-swapi:v0.1 .
 ```
 
 ### Run app
 ```
-docker run -d -p <host-port>:<docker-port> rocard/angular-frontend-assessment:v0.1
+docker run -d -p <host-port>:<docker-port> <username>/<app-name>:<tag>
 
-Ex. docker run -d -p 8080:8080 rocard/angular-frontend-assessment:v0.1
+Ex. docker run -d -p 8080:8080 rocard/angular-frontend-for-swapi:v0.1
 ```
 
 You can now access the app via [http://localhost:8080](http://localhost:8080)
